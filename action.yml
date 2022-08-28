@@ -1,11 +1,28 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Wolfia magic link'
+description: 'Generate a wolfia magic link and create a comment on the PR with a magic link'
+author: 'Wolfia'
+branding:
+  icon: 'smartphone'
+  color: 'gray-dark'
 inputs:
-  milliseconds: # change this
+  github-token:
+    description: "Use github's automatically created [github token](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#example-1-passing-the-github_token-as-an-input)"
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+  wolfia-api-key-id:
+    description: 'API Key ID for accessing the [Wolfia API](https://wolfia.com/docs/#generate-an-api-key). Should be stored as a [github secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-an-environment).'
+    required: true
+  wolfia-api-key-secret:
+    description: 'API Key Secret for accessing the [Wolfia API](https://wolfia.com/docs/#generate-an-api-key).  Should be stored as a [github secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-an-environment).'
+    required: true
+  binary-path:
+    description: 'The binary file path to upload to wolfia'
+    required: true
+  link-description:
+    description: 'Description for the magic link'
+    default: ""
+  comment-on-pr:
+    description: 'Whether to comment the generated magic link on PR'
+    default: true
 runs:
   using: 'node16'
   main: 'dist/index.js'

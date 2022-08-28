@@ -1,0 +1,24 @@
+name: 'build'
+on:
+  pull_request:
+  push:
+    branches:
+      - 'releases/*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Compile and build github action
+        run: |
+          npm install
+          npm run all
+      - name: Generate wolfia github action
+        uses: ./
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          wolfia-api-key-id: ${{ secrets.WOLFIA_API_KEY_ID }}
+          wolfia-api-key-secret: ${{ secrets.WOLFIA_API_KEY_SECRET }}
+          binary-path: data/hacker.apk
+          link-description: Test description
