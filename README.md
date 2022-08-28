@@ -1,105 +1,51 @@
-<p align="center">
-  <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
-</p>
+# Wolfia-GitHub-Action v1
 
-# Create a JavaScript Action using TypeScript
+This generates a magic link for every commit of your PR. Also, optionally updates the PR with a comment to view the magic link.
 
-Use this template to bootstrap the creation of a TypeScript action.:rocket:
+Refer [here](https://github.com/actions/wolfia-github-action/tree/releases/) for the previous version
 
-This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.  
+## Usage
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
+See [action.yml](action.yml). 
 
-## Create an action from this template
+| Key                   | Value                                                                                                                                                                               | Suggested Type | Required | Default |
+|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|----------|---------|
+| github-token          | Use github's automatically created [github token](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#example-1-passing-the-github_token-as-an-input) | secret env     | true     | N/A     |
+| wolfia-api-key-id     | API Key ID for accessing the [Wolfia API](https://wolfia.com/docs/#generate-an-api-key)                                                                                             | secret env     | true     | N/A     |
+| wolfia-api-key-secret | API Key Secret for accessing the [Wolfia API](https://wolfia.com/docs/#generate-an-api-key)                                                                                         | secret env     | true     | N/A     |
+| binary-path           | Path to binary file to be uploaded to wolfia                                                                                                                                        | inline         | true     | N/A     |
+| link-description      | Description for the magic link                                                                                                                                                      | inline         | false    | ""      |
+| comment-on-pr         | Whether to comment the generated magic link on PR                                                                                                                                   | inline         | false    | true    |
 
-Click the `Use this Template` and provide the new repo details for your action
+Here's an [example configuration](.github/workflows/build.yml).
 
-## Code in Main
-
-> First, you'll need to have a reasonably modern version of `node` handy. This won't work with versions older than 9, for instance.
-
-Install the dependencies  
-```bash
-$ npm install
-```
-
-Build the typescript and package it for distribution
-```bash
-$ npm run build && npm run package
-```
-
-Run the tests :heavy_check_mark:  
-```bash
-$ npm test
-
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
-
-...
-```
-
-## Change action.yml
-
-The action.yml defines the inputs and output for your action.
-
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-import * as core from '@actions/core';
-...
-
-async function run() {
-  try { 
-      ...
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
-
-## Publish to a distribution branch
-
-Actions are run from GitHub repos so we will checkin the packed dist folder. 
-
-Then run [ncc](https://github.com/zeit/ncc) and push the results:
-```bash
-$ npm run package
-$ git add dist
-$ git commit -a -m "prod dependencies"
-$ git push origin releases/v1
-```
-
-Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
-
-Your action is now published! :rocket: 
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Validate
-
-You can now validate the action by referencing `./` in a workflow in your repo (see [test.yml](.github/workflows/test.yml))
+### Upload a binary to wolfia (on [pull request](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request), with comment)
 
 ```yaml
-uses: ./
-with:
-  milliseconds: 1000
+steps:
+- uses: wolfia-app/wolfia-github-action@v1.0.0-alpha
+  with:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    wolfia-api-key-id: ${{ secrets.WOLFIA_API_KEY_ID }}
+    wolfia-api-key-secret: ${{ secrets.WOLFIA_API_KEY_SECRET }}
+    binary-path: path/to/artifact/binary.apk
+    link-description: Custom link description
 ```
 
-See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
+### Upload a binary to wolfia (on [push](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#push), without comment)
 
-## Usage:
+```yaml
+steps:
+- uses: wolfia-app/wolfia-github-action@v1.0.0-alpha
+  with:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    wolfia-api-key-id: ${{ secrets.WOLFIA_API_KEY_ID }}
+    wolfia-api-key-secret: ${{ secrets.WOLFIA_API_KEY_SECRET }}
+    binary-path: path/to/artifact/binary.apk
+    link-description: Custom link description
+    comment-on-pr: false
+```
 
-After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and latest V1 action
+## License
+
+The scripts and documentation in this project are released under the [MIT License](LICENSE)
