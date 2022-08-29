@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import {createComment, getLastCommitSha, getPullRequestTitle} from './octokit'
+import * as octokit from './octokit'
 import {generateMagicLink} from './wolfia'
 import * as github from '@actions/github'
 
@@ -14,24 +14,20 @@ async function runWolfiaAction(): Promise<void> {
       return
     }
 
-    const linkTitle = `${await getPullRequestTitle()} - ${await getLastCommitSha()}`
     const linkDescription = core.getInput('link-description')
     const binaryPath = core.getInput('binary-path')
 
-    core.info(
-      `Uploading binary from path: ${binaryPath} with title: ${linkTitle} and description: ${linkDescription}`
-    )
-
+    const pullRequestInfo = await octokit.getPullRequestInfo()
     const magicLink = await generateMagicLink(
-      linkTitle,
       linkDescription,
-      binaryPath
+      binaryPath,
+      JSON.stringify(pullRequestInfo),
     )
 
     core.info(`Wolfia magic link: ${magicLink.data.link}`)
 
     if (shouldCommentOnPR) {
-      await createComment(
+      await octokit.createComment(
         `Try out the app with [Wolfia Magic Link](${magicLink.data.link}) ✨🔮`
       )
     }
