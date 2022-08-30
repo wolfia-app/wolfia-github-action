@@ -14,20 +14,24 @@ export async function createComment(comment: string): Promise<any> {
   })
 }
 
-export async function getPullRequestTitle(): Promise<string> {
+export async function getPullRequestInfo() {
   const pullRequest = await octokit.rest.pulls.get({
     owner: context.repo.owner,
     repo: context.repo.repo,
     pull_number: context.payload.pull_request!.number
-  })
-  return pullRequest.data.title
-}
-
-export async function getLastCommitSha(): Promise<string> {
-  const pullRequest = await octokit.rest.pulls.get({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    pull_number: context.payload.pull_request!.number
-  })
-  return pullRequest.data.head.sha.slice(0,7)
+  });
+  return {
+    latestSha: pullRequest.data.head.sha.slice(0, 7),
+    branchName: pullRequest.data.head.ref,
+    branchUrl: pullRequest.data.html_url,
+    pullRequestTitle: pullRequest.data.title,
+    pullRequestCreatedAt: pullRequest.data.created_at,
+    pullRequestUpdatedAt: pullRequest.data.updated_at,
+    repoName: pullRequest.data.head.repo?.full_name,
+    repoUrl: pullRequest.data.head.repo?.html_url,
+    repoDescription: pullRequest.data.head.repo?.description,
+    creatorId: pullRequest.data.user?.login,
+    creatorProfileUrl: pullRequest.data.user?.html_url,
+    creatorAvatarUrl: pullRequest.data.user?.avatar_url,
+  }
 }

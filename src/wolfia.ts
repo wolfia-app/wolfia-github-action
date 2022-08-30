@@ -5,9 +5,9 @@ import axios, {AxiosResponse} from 'axios'
 import path from 'path'
 
 export async function generateMagicLink(
-  linkTitle: string,
   linkDescription: string,
-  binaryPath: string
+  binaryPath: string,
+  additionalInfo: string,
 ): Promise<AxiosResponse<MagicLink>> {
   const apiKeyId = core.getInput('wolfia-api-key-id')
   const apiKeySecret = core.getInput('wolfia-api-key-secret')
@@ -18,8 +18,8 @@ export async function generateMagicLink(
     fs.readFileSync(binaryPath),
     path.parse(binaryPath).base
   )
-  formData.append('linktitle', linkTitle)
   formData.append('linkdescription', linkDescription)
+  formData.append('linkadditionalinfo', additionalInfo)
 
   return axios.post<MagicLink>('https://wolfia.com/magic-links', formData, {
     headers: {
