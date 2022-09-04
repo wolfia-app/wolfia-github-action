@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Compile and build github action
         run: |
-          npm install
+          npm ci --ignore-scripts
           npm run all
       - name: Generate wolfia github action
         uses: ./
@@ -20,5 +20,5 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           wolfia-api-key-id: ${{ secrets.WOLFIA_API_KEY_ID }}
           wolfia-api-key-secret: ${{ secrets.WOLFIA_API_KEY_SECRET }}
-          binary-path: data/hacker.apk
+          app-path: data/hacker.apk
           link-description: Test description
