@@ -54,7 +54,7 @@ function runWolfiaAction() {
             }
             const linkTitle = `${yield (0, octokit_1.getPullRequestTitle)()} - ${yield (0, octokit_1.getLastCommitSha)()}`;
             const linkDescription = core.getInput('link-description');
-            const binaryPath = core.getInput('binary-path');
+            const binaryPath = core.getInput('app-path');
             core.info(`Uploading binary from path: ${binaryPath} with title: ${linkTitle} and description: ${linkDescription}`);
             const magicLink = yield (0, wolfia_1.generateMagicLink)(linkTitle, linkDescription, binaryPath);
             core.info(`Wolfia magic link: ${magicLink.data.link}`);
