@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import * as octokit from './octokit'
-import {generateMagicLink} from './wolfia'
+import { generateMagicLink } from './wolfia'
 import * as github from '@actions/github'
 
 const context = github.context
@@ -18,12 +18,8 @@ async function runWolfiaAction(): Promise<void> {
     const binaryPath = core.getInput('binary-path')
 
     const pullRequestInfo = await octokit.getPullRequestInfo()
-    const magicLink = await generateMagicLink(
-      linkDescription,
-      binaryPath,
-      JSON.stringify(pullRequestInfo),
-    )
-    
+    const magicLink = await generateMagicLink(linkDescription, binaryPath, JSON.stringify(pullRequestInfo))
+
     core.info(`Wolfia magic link: ${magicLink.data.link}`)
 
     if (shouldCommentOnPR) {

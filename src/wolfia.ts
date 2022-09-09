@@ -21,7 +21,7 @@ export async function generateMagicLink(
   formData.append('linkdescription', linkDescription)
   formData.append('linkadditionalinfo', additionalInfo)
 
-  return axios.post<MagicLink>('https://wolfia.com/magic-links', formData, {
+  return axios.post<MagicLink>('https://api.wolfia.com/magic-links', formData, {
     headers: {
       'Content-Type': `multipart/form-data; boundary=${formData.getBoundary()}`,
       'X-Api-Key-Id': apiKeyId,
