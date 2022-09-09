@@ -13,7 +13,7 @@ See [action.yml](action.yml).
 | github-token          | Use github's automatically created [github token](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#example-1-passing-the-github_token-as-an-input) | secret env     | true     | N/A     |
 | wolfia-api-key-id     | API Key ID for accessing the [Wolfia API](https://wolfia.com/docs/#generate-an-api-key)                                                                                             | secret env     | true     | N/A     |
 | wolfia-api-key-secret | API Key Secret for accessing the [Wolfia API](https://wolfia.com/docs/#generate-an-api-key)                                                                                         | secret env     | true     | N/A     |
-| binary-path           | Path to binary file to be uploaded to wolfia                                                                                                                                        | inline         | true     | N/A     |
+| app-path              | Path to binary file to be uploaded to wolfia                                                                                                                                        | inline         | true     | N/A     |
 | link-description      | Description for the magic link                                                                                                                                                      | inline         | false    | ""      |
 | comment-on-pr         | Whether to comment the generated magic link on PR                                                                                                                                   | inline         | false    | true    |
 
@@ -23,12 +23,12 @@ Here's an [example configuration](.github/workflows/build.yml).
 
 ```yaml
 steps:
-- uses: wolfia-app/wolfia-github-action@v1.0.1-alpha
+- uses: wolfia-app/wolfia-github-action@v1.1.0
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     wolfia-api-key-id: ${{ secrets.WOLFIA_API_KEY_ID }}
     wolfia-api-key-secret: ${{ secrets.WOLFIA_API_KEY_SECRET }}
-    binary-path: path/to/artifact/binary.apk
+    app-path: path/to/artifact/app.apk
     link-description: Custom link description
 ```
 
@@ -36,12 +36,12 @@ steps:
 
 ```yaml
 steps:
-- uses: wolfia-app/wolfia-github-action@v1.0.1-alpha
+- uses: wolfia-app/wolfia-github-action@v1.1.0
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     wolfia-api-key-id: ${{ secrets.WOLFIA_API_KEY_ID }}
     wolfia-api-key-secret: ${{ secrets.WOLFIA_API_KEY_SECRET }}
-    binary-path: path/to/artifact/binary.apk
+    app-path: path/to/artifact/app.apk
     link-description: Custom link description
     comment-on-pr: false
 ```

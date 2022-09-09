@@ -15,7 +15,7 @@ async function runWolfiaAction(): Promise<void> {
     }
 
     const linkDescription = core.getInput('link-description')
-    const binaryPath = core.getInput('binary-path')
+    const binaryPath = core.getInput('app-path')
 
     const pullRequestInfo = await octokit.getPullRequestInfo()
     const magicLink = await generateMagicLink(linkDescription, binaryPath, JSON.stringify(pullRequestInfo))
